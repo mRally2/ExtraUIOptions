@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheatTable CheatEngineTableVersion="38">
+  <CheatEntries>
+    <CheatEntry>
+      <ID>0</ID>
+      <Description>"EXTRA UI OPTIONS"</Description>
+      <LastState/>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript>{$lua}
+getLuaEngine().cbShowOnPrint.Checked=false
+getLuaEngine().hide()
+
+function DEC_HEX(IN)
+    local B,K,OUT,I,D=16,"0123456789ABCDEF","",0
+    while IN&gt;0 do
+        I=I+1
+        IN,D=math.floor(IN/B),math.mod(IN,B)+1
+        OUT=string.sub(K,D,D)..OUT
+    end
+    return OUT
+end
+
+local addressStart = "F0000000"
+local addressEnd = "FFFFFFFF"
+
+[ENABLE]
+
+local AOB = "4D 41 4C 00 52 45 41 4C 49 53 54 49 43 00 53 45 4C 45 43 54 20 41 20 50 4C 41 59 4C 49 53 54 00"
+local MyMemscan = createMemScan()
+memscan_returnOnlyOneResult(MyMemscan, true)
+memscan_firstScan(MyMemscan,soExactValue,vtByteArray,0,AOB,"",addressStart,addressEnd,"*X*W*C",0,"",true,true,false,false)
+memscan_waitTillDone(MyMemscan)
+local address = memscan_getOnlyResult(MyMemscan) --Returns the address in integer format
+if address ~= nil then
+    local string_end = {0x00}
+    writeString(address+0x20,"EXTRA UI OPTIONS")
+    writeBytes(address+0x30,string_end)
+    print "String Swap Complete Complete!"
+else
+    print "String Swap Failed!"
+end
+
+
+[DISABLE]
+
+</AssemblerScript>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>592</ID>
+      <Description>"SHOW EXTRA UI OPTIONS"</Description>
+      <LastState/>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript>[ENABLE]
+//Researched and discovered by _mRally2
+
+///UILabelTreeMenuItem::Visibility::InvertValue
+//"Need for Speed The Run.exe"+568F52: cmp [esi+40],bl
+
+//1.0.0.0 Executable
+//0150B680:
+//jmp 0150B6AB
+
+00968F50:
+jmp 00968F7B
+
+[DISABLE]
+
+00968F50:
+jne 00968F7B
+</AssemblerScript>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>498</ID>
+      <Description>"UI Objects Hook"</Description>
+      <LastState/>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript>[ENABLE]
+alloc(UI_PTR,$500)
+registersymbol(UI_PTR)
+alloc(newmem,2048)
+label(returnhere)
+label(originalcode)
+label(exit)
+
+newmem: //this is allocated memory, you have read,write,execute access
+push rcx
+lea rcx,[edi]
+mov [UI_PTR],rcx
+jmp originalcode
+
+originalcode:
+pop rcx
+mov eax,[edi]
+mov [edi+04],esi
+
+exit:
+jmp returnhere
+
+"Need for Speed The Run.exe"+1089270:
+jmp newmem
+returnhere:
+
+[DISABLE]
+dealloc(newmem)
+dealloc(UI_PTR)
+"Need for Speed The Run.exe"+1089270:
+mov eax,[edi]
+mov [edi+04],esi
+</AssemblerScript>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>488</ID>
+      <Description>"UI Objects Transparency"</Description>
+      <ShowAsSigned>0</ShowAsSigned>
+      <VariableType>Float</VariableType>
+      <Address>UI_PTR</Address>
+      <Offsets>
+        <Offset>-C4</Offset>
+      </Offsets>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>18</ID>
+      <Description>"HUD Toggle"</Description>
+      <VariableType>Byte</VariableType>
+      <Address>0288B55C</Address>
+      <Offsets>
+        <Offset>5B8</Offset>
+        <Offset>C</Offset>
+      </Offsets>
+    </CheatEntry>
+  </CheatEntries>
+  <UserdefinedSymbols/>
+</CheatTable>
