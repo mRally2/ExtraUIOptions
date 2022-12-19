@@ -30,7 +30,7 @@
    <hr>
    <ul>
       <li>It won’t unlock the Garage Photomode when offline</li>
-      <li>Cheat table containing the source code which the trainer has been built with is available inside the Code folder of this release</li>
+      <li>Cheat table containing the source code which the trainer has been built with is available inside the Code folder</li>
       <li>By using any piece of code code shared here you agree to credit the respective author once your mod or tool gets released to the public</li>
       <li>You are allowed to repost or reference this mod in any modding website that hasn’t been published on yet if and only if you follow the same design and structure used here</li>
       <li>Your antivirus might detect it as a threat. It’s a false positive. The tool has been built using a custom compiled version of Cheat Engine 7.3</li>
